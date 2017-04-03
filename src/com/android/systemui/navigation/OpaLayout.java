@@ -3,7 +3,9 @@ package com.android.systemui.navigation;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.graphics.PorterDuff.Mode;
 import android.os.SystemClock;
 import android.util.ArraySet;
 import android.util.AttributeSet;
@@ -58,10 +60,10 @@ public class OpaLayout extends FrameLayout {
     private boolean mIsHomeButton;
     private long mStartTime;
 
-    private View mRed;
-    private View mBlue;
-    private View mGreen;
-    private View mYellow;
+    private ImageView mRed;
+    private ImageView mBlue;
+    private ImageView mGreen;
+    private ImageView mYellow;
     private View mSmartButton;
 
     private View mTop;
@@ -78,6 +80,16 @@ public class OpaLayout extends FrameLayout {
     private final Interpolator mDotsFullSizeInterpolator;
     private final Interpolator mFastOutSlowInInterpolator;
     private final Interpolator mHomeDisappearInterpolator;
+
+    public static int VIEW_TOP;
+    public static int VIEW_LEFT;
+    public static int VIEW_RIGHT;
+    public static int VIEW_BOTTOM;
+    public static int mColorDots;
+    public static int mRandomColor1;
+    public static int mRandomColor2;
+    public static int mRandomColor3;
+    public static int mRandomColor4;
 
     public OpaLayout(Context context) {
         this(context, null);
@@ -120,6 +132,7 @@ public class OpaLayout extends FrameLayout {
     }
 
     private void startAll(ArraySet<Animator> animators) {
+        UpdateColorSettings();
         setOpaVisibility(true);
         for(int i=0; i < animators.size(); i++) {
             Animator curAnim = (Animator) mCurrentAnimators.valueAt(i);
@@ -395,12 +408,12 @@ public class OpaLayout extends FrameLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        mRed = findViewById(R.id.red);
-        mBlue = findViewById(R.id.blue);
-        mYellow = findViewById(R.id.yellow);
-        mGreen = findViewById(R.id.green);
+        mRed = (ImageView) findViewById(R.id.red);
+        mBlue = (ImageView) findViewById(R.id.blue);
+        mYellow = (ImageView) findViewById(R.id.yellow);
+        mGreen = (ImageView) findViewById(R.id.green);
         mSmartButton = findViewById(R.id.smartbutton);
-
+        UpdateColorSettings();
         setOpaVisibility(false);
     }
 
@@ -485,5 +498,52 @@ public class OpaLayout extends FrameLayout {
     public void setOpaVisibilityHome(boolean opaHomeOnly, boolean isHomeButton) {
         mOpaHomeOnly = opaHomeOnly;
         mIsHomeButton = isHomeButton;
+    }
+
+    public void UpdateColorSettings() {
+        if(mColorDots == 1) {
+            UpdateColors();
+        } else if (mColorDots == 2) {
+            setRandomColors();
+        } else if(mColorDots == 3) {
+            setMoreRandomColors();
+        } else {
+            ClearColors();
+        }
+    }
+
+    public void setMoreRandomColors() {
+        if (mRed != null) mRed.setColorFilter(randomColor(), Mode.SRC_ATOP);
+        if (mBlue != null) mBlue.setColorFilter(randomColor(), Mode.SRC_ATOP);
+        if (mGreen != null) mGreen.setColorFilter(randomColor(), Mode.SRC_ATOP);
+        if (mYellow != null) mYellow.setColorFilter(randomColor(), Mode.SRC_ATOP);
+    }
+
+    public void setRandomColors() {
+        if (mRed != null) mRed.setColorFilter(mRandomColor1, Mode.SRC_ATOP);
+        if (mBlue != null) mBlue.setColorFilter(mRandomColor2, Mode.SRC_ATOP);
+        if (mGreen != null) mGreen.setColorFilter(mRandomColor3, Mode.SRC_ATOP);
+        if (mYellow != null) mYellow.setColorFilter(mRandomColor4, Mode.SRC_ATOP);
+    }
+
+    public void UpdateColors() {
+        if (mRed != null) mRed.setColorFilter(VIEW_TOP, Mode.SRC_ATOP);
+        if (mBlue != null)mBlue.setColorFilter(VIEW_LEFT, Mode.SRC_ATOP);
+        if (mGreen != null) mGreen.setColorFilter(VIEW_RIGHT, Mode.SRC_ATOP);
+        if (mYellow != null) mYellow.setColorFilter(VIEW_BOTTOM, Mode.SRC_ATOP);
+    }
+
+    public int randomColor() {
+        int red = (int) (0xff * Math.random());
+        int green = (int) (0xff * Math.random());
+        int blue = (int) (0xff * Math.random());
+        return Color.argb(255, red, green, blue);
+    }
+
+    public void ClearColors() {
+        if (mRed != null) mRed.clearColorFilter();
+        if (mBlue != null) mBlue.clearColorFilter();
+        if (mGreen != null) mGreen.clearColorFilter();
+        if (mYellow != null) mYellow.clearColorFilter();
     }
 }
