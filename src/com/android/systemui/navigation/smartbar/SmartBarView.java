@@ -97,9 +97,9 @@ public class SmartBarView extends BaseNavigationBar {
 
     private static Set<Uri> sUris = new HashSet<Uri>();
     static {
-        sUris.add(Settings.Secure.getUriFor("smartbar_context_menu_mode"));
-        sUris.add(Settings.Secure.getUriFor("smartbar_ime_hint_mode"));
-        sUris.add(Settings.Secure.getUriFor("smartbar_button_animation_style"));
+        sUris.add(Settings.Secure.getUriFor(Settings.Secure.SMARTBAR_CONTEXT_MENU_MODE));
+        sUris.add(Settings.Secure.getUriFor(Settings.Secure.SMARTBAR_IME_HINT_MODE));
+        sUris.add(Settings.Secure.getUriFor(Settings.Secure.SMARTBAR_BUTTON_ANIMATION_STYLE));
         sUris.add(Settings.Secure.getUriFor(Settings.Secure.NAVBAR_BUTTONS_ALPHA));
         sUris.add(Settings.Secure.getUriFor(Settings.Secure.PULSE_CUSTOM_BUTTONS_OPACITY));
         sUris.add(Settings.Secure.getUriFor(Settings.Secure.SMARTBAR_LONGPRESS_DELAY));
@@ -115,12 +115,12 @@ public class SmartBarView extends BaseNavigationBar {
 
         @Override
         public void onChange(Uri uri) {
-            if (uri.equals(Settings.Secure.getUriFor("smartbar_context_menu_mode"))) {
+            if (uri.equals(Settings.Secure.getUriFor(Settings.Secure.SMARTBAR_CONTEXT_MENU_MODE))) {
                 updateContextLayoutSettings();
-            } else if (uri.equals(Settings.Secure.getUriFor("smartbar_ime_hint_mode"))) {
+            } else if (uri.equals(Settings.Secure.getUriFor(Settings.Secure.SMARTBAR_IME_HINT_MODE))) {
                 updateImeHintModeSettings();
                 refreshImeHintMode();
-            } else if (uri.equals(Settings.Secure.getUriFor("smartbar_button_animation_style"))) {
+            } else if (uri.equals(Settings.Secure.getUriFor(Settings.Secure.SMARTBAR_BUTTON_ANIMATION_STYLE))) {
                 updateAnimationStyle();
             } else if (uri.equals(Settings.Secure.getUriFor(Settings.Secure.NAVBAR_BUTTONS_ALPHA))) {
                 updateButtonAlpha();
@@ -625,7 +625,7 @@ public class SmartBarView extends BaseNavigationBar {
 
     private void updateContextLayoutSettings() {
         boolean onLeft = Settings.Secure.getIntForUser(getContext().getContentResolver(),
-                "smartbar_context_menu_mode", 0, UserHandle.USER_CURRENT) == 1;
+                Settings.Secure.SMARTBAR_CONTEXT_MENU_MODE, 0, UserHandle.USER_CURRENT) == 1;
         if (mHasLeftContext != onLeft) {
             getSmartMenuButton().setVisibility(INVISIBLE);
             getSmartImeSwitchButton().setVisibility(INVISIBLE);
@@ -641,12 +641,12 @@ public class SmartBarView extends BaseNavigationBar {
 
     private void updateImeHintModeSettings() {
         mImeHintMode = Settings.Secure.getIntForUser(getContext().getContentResolver(),
-                "smartbar_ime_hint_mode", IME_HINT_MODE_HIDDEN, UserHandle.USER_CURRENT);
+                Settings.Secure.SMARTBAR_IME_HINT_MODE, IME_HINT_MODE_HIDDEN, UserHandle.USER_CURRENT);
     }
 
     private void updateAnimationStyle() {
         mButtonAnimationStyle = Settings.Secure.getIntForUser(getContext().getContentResolver(),
-                "smartbar_button_animation_style", SmartButtonView.ANIM_STYLE_RIPPLE, UserHandle.USER_CURRENT);
+                Settings.Secure.SMARTBAR_BUTTON_ANIMATION_STYLE, SmartButtonView.ANIM_STYLE_RIPPLE, UserHandle.USER_CURRENT);
         ViewGroup hidden = (ViewGroup) getHiddenView().findViewWithTag(Res.Common.NAV_BUTTONS);
         for (String buttonTag : mCurrentSequence) {
             SmartButtonView v = findCurrentButton(buttonTag);
