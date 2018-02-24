@@ -361,7 +361,7 @@ public class SolidLineRenderer extends Renderer implements ColorAnimator.ColorAn
             int solidUnitsColor = Settings.Secure.getIntForUser(
                     resolver, Settings.Secure.PULSE_SOLID_UNITS_OPACITY, 200,
                     UserHandle.USER_CURRENT);
-            mFadePaint.setColor(Color.argb(mAutoColor ? 255 : solidUnitsColor, 255, 255, 255));
+            mFadePaint.setColor(Color.argb(solidUnitsColor, 255, 255, 255));
         }
 
         private void setupFFTAverage() {
