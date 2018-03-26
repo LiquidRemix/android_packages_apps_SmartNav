@@ -247,6 +247,12 @@ public class SolidLineRenderer extends Renderer implements ColorAnimator.ColorAn
                     Settings.Secure.getUriFor(Settings.Secure.PULSE_LAVALAMP_SOLID_SPEED), false, this,
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(
+                    Settings.Secure.getUriFor(Settings.Secure.FLING_PULSE_LAVALAMP_COLOR_FROM), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(
+                    Settings.Secure.getUriFor(Settings.Secure.FLING_PULSE_LAVALAMP_COLOR_TO), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(
                     Settings.Secure.getUriFor(Settings.Secure.PULSE_SOLID_UNITS_COUNT), false, this,
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(
@@ -284,6 +290,16 @@ public class SolidLineRenderer extends Renderer implements ColorAnimator.ColorAn
                     Settings.Secure.PULSE_LAVALAMP_SOLID_SPEED, 10 * 1000,
                     UserHandle.USER_CURRENT);
             mLavaLamp.setAnimationTime(lavaLampSpeed);
+            int lavaLampColorFrom= Settings.Secure.getIntForUser(resolver,
+                    Settings.Secure.FLING_PULSE_LAVALAMP_COLOR_FROM,
+                    0xffff8080,
+                    UserHandle.USER_CURRENT);
+            int lavaLampColorTo = Settings.Secure.getIntForUser(resolver,
+                    Settings.Secure.FLING_PULSE_LAVALAMP_COLOR_TO,
+                    0xff8080ff,
+                    UserHandle.USER_CURRENT);
+            mLavaLamp.setAnimationColors(lavaLampColorFrom, lavaLampColorTo);
+
             if (mLavaLampEnabled && mIsValidStream) {
                 mLavaLamp.start();
             } else {

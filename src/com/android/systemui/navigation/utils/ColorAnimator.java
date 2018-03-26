@@ -104,6 +104,16 @@ public class ColorAnimator implements ValueAnimator.AnimatorUpdateListener {
         }
     }
 
+    public void setAnimationColors(int fromColor, int toColor) {
+        if (mFromColor != fromColor || mToColor != toColor) {
+            mFromColor = fromColor;
+            mToColor = toColor;
+            if (mColorAnim.isRunning()) {
+                start();
+            }
+        }
+    }
+    
     public void setColorAnimatorListener(ColorAnimationListener listener) {
         mListener = listener;
     }
