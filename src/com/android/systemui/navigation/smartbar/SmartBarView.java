@@ -602,6 +602,11 @@ public class SmartBarView extends BaseNavigationBar {
     }
 
     @Override
+    protected void notifyBootCompleted() {
+        updateCurrentIcons();
+    }
+
+    @Override
     public void reorient() {
         mEditor.prepareToReorient();
         super.reorient();
