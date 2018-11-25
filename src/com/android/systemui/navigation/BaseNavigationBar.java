@@ -338,6 +338,12 @@ public abstract class BaseNavigationBar extends LinearLayout implements Navigato
         }
     }
 
+    public void setPulseColors(boolean colorizedMedia, int[] colors) {
+        if (mPulse != null) {
+            mPulse.setPulseColors(colorizedMedia, colors);
+        }
+    }
+
     // keep keyguard methods final and use getter to access
     public final void setKeyguardShowing(boolean showing) {
         if (mKeyguardShowing != showing) {
