@@ -80,6 +80,7 @@ public interface Navigator extends PluginListener<NavGesture> {
     public default void setNotificationPanelExpanded(boolean expanded) {}
     public default void setPulseColors(boolean colorizedMedia, int[] colors) {}
     public default void setFullGestureMode(boolean mFullGestureMode, boolean dt2sEnabled) {}
+    public default void swiftNavigationBarItems(int horizontalShift, int verticalShift) {}
 
     /*
      * Introduced in Pie
