@@ -2,6 +2,7 @@
  * Copyright (C) 2008 The Android Open Source Project
  * Copyright (C) 2014 The TeamEos Project
  * Copyright (C) 2016 The DirtyUnicorns Project
+ * Copyright (C) 2019 crDroid Android Project
  * 
  * @author: Randall Rushing <randall.rushing@gmail.com>
  *
@@ -33,6 +34,7 @@ import com.android.systemui.navigation.NavbarOverlayResources;
 import com.android.systemui.navigation.pulse.PulseController;
 import com.android.systemui.navigation.pulse.PulseController.PulseObserver;
 import com.android.systemui.navigation.utils.SmartObserver;
+import com.android.systemui.onehand.SlideTouchEvent;
 import com.android.systemui.plugins.statusbar.phone.NavGesture;
 import com.android.systemui.statusbar.phone.BarTransitions;
 import com.android.systemui.R;
@@ -64,6 +66,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -113,6 +116,8 @@ public abstract class BaseNavigationBar extends LinearLayout implements Navigato
 
     protected boolean mCarMode = false;
     protected boolean mDockedStackExists;
+
+    private SlideTouchEvent mSlideTouchEvent;
 
     private class H extends Handler {
         public void handleMessage(Message m) {
@@ -178,6 +183,8 @@ public abstract class BaseNavigationBar extends LinearLayout implements Navigato
         filter.addAction(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_BOOT_COMPLETED);
+
+        mSlideTouchEvent = new SlideTouchEvent(context);
     }
 
     // require implementation
@@ -236,6 +243,18 @@ public abstract class BaseNavigationBar extends LinearLayout implements Navigato
     @Override
     public boolean needsReorient(int rotation) {
         return mCurrentRotation != rotation;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        mSlideTouchEvent.handleTouchEvent(event);
+        return super.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        mSlideTouchEvent.handleTouchEvent(event);
+        return super.onInterceptTouchEvent(event);
     }
 
     public SpringSystem getSpringSystem() {
