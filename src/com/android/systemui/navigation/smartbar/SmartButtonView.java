@@ -225,7 +225,8 @@ public class SmartButtonView extends ImageView {
     private void fireActionIfSecure(String action) {
         final boolean keyguardShowing = mHost.isKeyguardShowing();
         if (!keyguardShowing
-                || (keyguardShowing && ActionHandler.SYSTEMUI_TASK_BACK.equals(action))) {
+                || (ActionHandler.SYSTEMUI_TASK_BACK.equals(action)
+                    || ActionHandler.SYSTEMUI_TASK_HOME.equals(action))) {
              ActionHandler.performTask(mContext, action);
         }
     }

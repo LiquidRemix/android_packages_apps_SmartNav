@@ -132,9 +132,10 @@ public class FlingActionHandler implements Swipeable, SmartObservable {
             return;
         }
         final String theAction = action.getAction();
-        // only back is allowed in keyguard
+        // only back and home is allowed in keyguard
         if (mKeyguardShowing
-                && (!TextUtils.equals(theAction, ActionHandler.SYSTEMUI_TASK_BACK))) {
+                && (!TextUtils.equals(theAction, ActionHandler.SYSTEMUI_TASK_BACK)
+                    && !TextUtils.equals(theAction, ActionHandler.SYSTEMUI_TASK_HOME))) {
             return;
         }
         mHost.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
